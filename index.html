@@ -4,17 +4,17 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Contenido SEO</title>
-		<link rel="shortcut icon" href="/img/elogia.png" type="image/x-icon" />
-		<link rel="stylesheet" href="/css/reboot.css" />
-		<link rel="stylesheet" href="/css/app.css" />
-		<link rel="stylesheet" href="/css/style.css" />
+		<link rel="shortcut icon" href="img/elogia.png" type="image/x-icon" />
+		<link rel="stylesheet" href="css/reboot.css" />
+		<link rel="stylesheet" href="css/app.css" />
+		<link rel="stylesheet" href="css/style.css" />
 	</head>
 	<body>
 		<!-- header & nav -->
 		<div class="container">
 			<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
 				<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-					<img class="me-2" src="/img/elogia.png" width="60px" alt="" />
+					<img class="me-2" src="img/elogia.png" width="60px" alt="" />
 				</a>
 
 				<ul class="nav nav-pills">
@@ -225,13 +225,13 @@
 						'<button id="copyListButton" onclick="CopyListToClipboard();" style="float: right;">Copiar Texto</button><div id="article"></div>';
 					document.getElementById(
 						'article',
-					).innerHTML = `<center>[Buscando en Google...]<br><img src='/img/load.gif'></center>`;
+					).innerHTML = `<center>[Buscando en Google...]<br><img src='img/load.gif'></center>`;
 					const searchResults = await buscarGOOGLE(keyword);
 					const systemPrompt1 =
 						'Escribe una estructura muy detallada y lo más extensa posible para un artículo web. Indicarás los distintos encabezados (H2) y los subtítulos (H3). Dentro de cada encabezado y subtítulo, explica de forma detallada con pequeñas frases todo lo que se va a hablar en dicho encabezado o subtítulo, así como si se requieren párrafos y listas.';
 					document.getElementById(
 						'article',
-					).innerHTML = `<center>[Redactando estructura...]<br><img src='/img/load.gif'></center>`;
+					).innerHTML = `<center>[Redactando estructura...]<br><img src='img/load.gif'></center>`;
 					const structure = await chatGPT(
 						apiKey,
 						systemPrompt1,
@@ -242,7 +242,7 @@
 						'Escribe un artículo muy extenso y detallado para un sitio web, basado en la estructura proporcionada. Es necesario resaltar con texto en negritas de aquellas frases importantes que sea necesario destacar.';
 					document.getElementById(
 						'article',
-					).innerHTML = `<center>[Redactando artículo...]<br><img src='/img/load.gif'></center>`;
+					).innerHTML = `<center>[Redactando artículo...]<br><img src='img/load.gif'></center>`;
 					const article = await chatGPT(
 						apiKey,
 						systemPrompt2,
@@ -278,8 +278,8 @@
 			</div>
 		</footer>
 	</body>
-	<script src="/js/core.js" type="text/javascript" id="jquery-core-js"></script>
-	<script src="/js/migrate.js" type="text/javascript" id="jquery-migrate-js"></script>
-	<script src="/js/index.js"></script>
-	<script src="/js/app.js"></script>
+	<script src="js/core.js" type="text/javascript" id="jquery-core-js"></script>
+	<script src="js/migrate.js" type="text/javascript" id="jquery-migrate-js"></script>
+	<script src="js/index.js"></script>
+	<script src="js/app.js"></script>
 </html>
