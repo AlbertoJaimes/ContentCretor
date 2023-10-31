@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Contenido SEO</title>
+		<link rel="shortcut icon" href="/img/elogia.png" type="image/x-icon" />
+		<link rel="stylesheet" href="/css/reboot.css" />
+		<link rel="stylesheet" href="/css/app.css" />
+		<link rel="stylesheet" href="/css/style.css" />
+	</head>
+	<body>
+		<!-- header & nav -->
+		<div class="container">
+			<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+				<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+					<img class="me-2" src="/img/elogia.png" width="60px" alt="" />
+				</a>
+
+				<ul class="nav nav-pills">
+					<li class="nav-item"><a href="index.html" class="nav-link text-black">Home</a></li>
+					<li class="nav-item">
+						<a
+							href="https://platform.openai.com/docs/api-reference/introduction"
+							target="_blank"
+							class="nav-link text-black"
+							>API Chat GPT</a
+						>
+					</li>
+					<li class="nav-item">
+						<a href="https://www.valueserp.com/" target="_blank" class="nav-link text-black">API Value SERP</a>
+					</li>
+				</ul>
+			</header>
+		</div>
+		<!-- section 1 -->
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<h1 class="text-center">Contenido con IA</h1>
+				</div>
+			</div>
+		</div>
+		<!-- section 2 -->
+		<div class="container">
+			<div class="section" id="section-language">
+				<div class="section-left">
+					<label for="idioma-select">Idioma:</label>
+					<select id="idioma-select">
+						<option value="ingles">Inglés</option>
+						<option value="italiano">Italiano</option>
+						<option value="espanol" selected>Español</option>
+						<option value="chino">Chino (simplificado)</option>
+						<option value="hindi">Hindi</option>
+						<option value="portugues">Portugués</option>
+						<option value="arabe">Árabe</option>
+						<option value="bengali">Bengalí</option>
+						<option value="ruso">Ruso</option>
+						<option value="japones">Japonés</option>
+						<option value="frances">Francés</option>
+					</select>
+				</div>
+				<div class="section-right">
+					<label for="country-select">País:</label>
+					<select name="country" id="country-select">
+						<option value="global" selected>Global</option>
+						<option value="us">Estados Unidos</option>
+						<option value="ca">Canadá</option>
+						<option value="gb">Reino Unido</option>
+						<option value="de">Alemania</option>
+						<option value="fr">Francia</option>
+						<option value="es">España</option>
+						<option value="it">Italia</option>
+						<option value="jp">Japón</option>
+						<option value="cn">China</option>
+						<option value="in">India</option>
+						<option value="ar">Argentina</option>
+						<option value="bo">Bolivia</option>
+						<option value="cl">Chile</option>
+						<option value="co">Colombia</option>
+						<option value="cr">Costa Rica</option>
+						<option value="do">República Dominicana</option>
+						<option value="ec">Ecuador</option>
+						<option value="gt">Guatemala</option>
+						<option value="hn">Honduras</option>
+						<option value="mx">México</option>
+						<option value="ni">Nicaragua</option>
+						<option value="pa">Panamá</option>
+						<option value="py">Paraguay</option>
+						<option value="pe">Perú</option>
+						<option value="pr">Puerto Rico</option>
+						<option value="sv">El Salvador</option>
+						<option value="uy">Uruguay</option>
+						<option value="ve">Venezuela</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<!-- section 3 -->
+		<div class="container">
+			<div class="section" id="section-apis">
+				<div class="section-left">
+					<label for="api_key">Clave API OpenAI: *</label>
+					<input id="api_key" type="password" placeholder="sk-GAZH5JLel..." />
+				</div>
+				<div class="section-right">
+					<label for="api_key_vs">Clave API Value SERP: *</label>
+					<input id="api_key_vs" type="password" placeholder="0E78FA..." />
+				</div>
+			</div>
+			<div class="section" id="section-keyword">
+				<div class="section-left">
+					<label for="keyword" style="color: red">Palabra clave: *</label>
+					<input id="keyword" type="text" placeholder="qué es el SEO" />
+					<button id="generarTituloButton" onclick="generarTitulo()">Redactar título</button>
+				</div>
+				<div class="section-right">
+					<label for="title" style="color: red">Título: *</label>
+					<input id="title" type="text" placeholder="Qué es el SEO en Elogia" />
+					<button id="redactarArticuloButton" onclick="generarArticulo()">Redactar artículo</button>
+				</div>
+			</div>
+		</div>
+		<!-- section 4 -->
+		<div id="particle" style="display: none">
+			<div id="article">
+				<center>Aquí estará escrito el artículo...</center>
+			</div>
+		</div>
+		<script>
+			let resultadosGoogle = '';
+			let gkeyword = '';
+			let google = 2;
+			async function chatGPT(apiKey, systemPrompt, userPrompt, assistantPrompt) {
+				const languageSelect = document.getElementById('idioma-select');
+				const selectedLanguage = languageSelect.options[languageSelect.selectedIndex].value;
+				const apiUrl = 'https://api.openai.com/v1/chat/completions';
+				const postFields = {
+					model: 'gpt-3.5-turbo-16k',
+					messages: [
+						{ role: 'system', content: `${systemPrompt}\nResponde siempre en idioma ${selectedLanguage}.` },
+						{ role: 'user', content: userPrompt },
+						{ role: 'assistant', content: assistantPrompt },
+					],
+				};
+				try {
+					const response = await $.ajax({
+						url: apiUrl,
+						type: 'POST',
+						headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + apiKey },
+						data: JSON.stringify(postFields),
+					});
+					console.log('Respuesta chatGPT:', response.choices[0].message.content);
+					return response.choices[0].message.content;
+				} catch (error) {
+					console.error('Error en chatGPT:', error);
+					throw error;
+				}
+			}
+			async function valueSERP(textoBusqueda) {
+				const apiKey = document.getElementById('api_key_vs').value;
+				const countrySelect = document.getElementById('country-select');
+				const selectedCountry = countrySelect.options[countrySelect.selectedIndex].value;
+				let url = `https://api.valueserp.com/search?api_key=${apiKey}&q=${encodeURIComponent(textoBusqueda)}`;
+				if (selectedCountry !== 'global') {
+					url += `&gl=${selectedCountry}`;
+				}
+				try {
+					const respuesta = await fetch(url);
+					const data = await respuesta.json();
+					if (data && data.organic_results) {
+						const organicResults = data.organic_results;
+						const titulosYFragmentos = organicResults.map((resultado) => {
+							return `${resultado.title}\n${resultado.snippet}\n`;
+						});
+						console.log('Respuesta ValueSerp: ' + titulosYFragmentos);
+						return titulosYFragmentos.join('\n');
+					} else {
+						return 'No se encontraron resultados orgánicos en el JSON.';
+					}
+				} catch (error) {
+					return `Error al obtener el contenido de la URL: ${error}`;
+				}
+			}
+			async function buscarGOOGLE(keyword) {
+				api_key_vs = document.getElementById('api_key_vs').value;
+				const countrySelect = document.getElementById('country-select');
+				const selectedCountry = countrySelect.options[countrySelect.selectedIndex].value;
+				if (api_key_vs === '' && google !== 0 && gkeyword !== keyword) {
+					gkeyword = keyword;
+					google = 0;
+					const apiKey = document.getElementById('api_key').value;
+					const systemPrompt = `Simula los posibles 10 primeros resultados de un motor de búsqueda, con sus títulos y metadescripciones.\nLos resultados deberán estar geolocalizados de acuerdo al código de país: ${selectedCountry}.\nEscribe tu respuesta como una lista sobre la palabra clave de búsqueda indica el usuario.`;
+					resultadosGoogle = await chatGPT(apiKey, systemPrompt, keyword, '');
+				} else if ((api_key_vs !== '' && google !== 1) || gkeyword !== keyword) {
+					gkeyword = keyword;
+					google = 1;
+					resultadosGoogle = valueSERP(keyword);
+				}
+				return resultadosGoogle;
+			}
+			async function generarTitulo() {
+				document.getElementById('title').value = '[Buscando en Google...]';
+				const apiKey = document.getElementById('api_key').value;
+				const keyword = document.getElementById('keyword').value;
+				const searchResults = await buscarGOOGLE(keyword);
+				const systemPrompt =
+					'Escribe un meta título cautivador y persuasivo, ajustado a 50-60 caracteres de extensión. Debe destacar por su relevancia, incorpora palabras clave y resaltan el valor del contenido.';
+				document.getElementById('title').value = '[Redactando título...]';
+				const titleResponse = await chatGPT(
+					apiKey,
+					systemPrompt,
+					`Escribe un meta título sobre: '${keyword}'.\nLos resultados actuales en Google son:\n${searchResults}.\nResponde solo con el título.`,
+					'Título: ',
+				);
+				document.getElementById('title').value = titleResponse.replaceAll('"', '').replace(/\.$/, '');
+			}
+			async function generarArticulo() {
+				try {
+					document.getElementById('particle').style.display = 'block';
+					const apiKey = document.getElementById('api_key').value;
+					const title = document.getElementById('title').value;
+					const keyword = document.getElementById('keyword').value;
+					document.getElementById('particle').innerHTML =
+						'<button id="copyListButton" onclick="CopyListToClipboard();" style="float: right;">Copiar Texto</button><div id="article"></div>';
+					document.getElementById(
+						'article',
+					).innerHTML = `<center>[Buscando en Google...]<br><img src='/img/load.gif'></center>`;
+					const searchResults = await buscarGOOGLE(keyword);
+					const systemPrompt1 =
+						'Escribe una estructura muy detallada y lo más extensa posible para un artículo web. Indicarás los distintos encabezados (H2) y los subtítulos (H3). Dentro de cada encabezado y subtítulo, explica de forma detallada con pequeñas frases todo lo que se va a hablar en dicho encabezado o subtítulo, así como si se requieren párrafos y listas.';
+					document.getElementById(
+						'article',
+					).innerHTML = `<center>[Redactando estructura...]<br><img src='/img/load.gif'></center>`;
+					const structure = await chatGPT(
+						apiKey,
+						systemPrompt1,
+						`Genera la estructura más extensa y completa para un artículo bastante detallado y profundo.\nAl buscar en Google actualmente, estos son los resultados de búsqueda:\n\n---\n\n${searchResults}\n\n---\n\nCon base en toda esa información genera la estructura más minuciosa posible para mi artículo web de al menos 1900 palabras.`,
+						`H1: ${title}`,
+					);
+					const systemPrompt2 =
+						'Escribe un artículo muy extenso y detallado para un sitio web, basado en la estructura proporcionada. Es necesario resaltar con texto en negritas de aquellas frases importantes que sea necesario destacar.';
+					document.getElementById(
+						'article',
+					).innerHTML = `<center>[Redactando artículo...]<br><img src='/img/load.gif'></center>`;
+					const article = await chatGPT(
+						apiKey,
+						systemPrompt2,
+						structure,
+						`<h1>${title}</h1>\n<h2>Introducción</h2>\n<p>`,
+					);
+					document.getElementById(
+						'particle',
+					).innerHTML = `<button id="copyListButton" onclick="CopyListToClipboard();" style="float: right;">Copiar Texto</button><div id="article"></div>`;
+					document.getElementById('article').innerHTML = `<p>${article.replace('<h2>Introducción</h2>', '')}`;
+				} catch (error) {
+					console.error('Error al generar artículo:', error);
+				}
+			}
+			function CopyListToClipboard() {
+				const contentToCopy = document.getElementById('article').innerText;
+				const tempInput = document.createElement('textarea');
+				tempInput.style.position = 'fixed';
+				tempInput.style.opacity = 0;
+				tempInput.value = contentToCopy;
+				document.body.appendChild(tempInput);
+				tempInput.select();
+				document.execCommand('copy');
+				document.body.removeChild(tempInput);
+			}
+		</script>
+		<!-- footer -->
+		<footer class="container">
+			<div class="row d-flex flex-wrap justify-content-center py-3 mb-4 border-top">
+				<div class="col">
+					<p class="text-center">© 2023 Elogia Team SEO (Test Pili, Yago, Novo) Todos los derechos reservados.</p>
+				</div>
+			</div>
+		</footer>
+	</body>
+	<script src="/js/core.js" type="text/javascript" id="jquery-core-js"></script>
+	<script src="/js/migrate.js" type="text/javascript" id="jquery-migrate-js"></script>
+	<script src="/js/index.js"></script>
+	<script src="/js/app.js"></script>
+</html>
